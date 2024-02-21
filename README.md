@@ -1,12 +1,5 @@
-A minimalistic and hackable template for developing, training, and sharing deep learning models.
-
-
-## Stack
-- Pytorch
-- Accelerate
-- Huggingface hub
-- Wandb
-
+# hourglass-llama
+A clean, modern, and generalized implementation of causal hierarchical transformers (wip)
 
 ## Install
 ```sh
@@ -17,50 +10,35 @@ pip install -e '.[train]'
 pip install .
 ```
 
-## Structure
-```
-├── package_name
-│   ├── config.py # model config
-│   ├── data.py # data processing logic
-│   ├── model.py # model definition
-│   └── trainer.py # trainer class and train config
-```
-
 ## Usage (inference)
 ```py
-from package_name import DemoModel
+from hourglass_llama import HourglassLlama
 
 # load pretrained checkpoint
-model = DemoModel.from_pretrained(xxx)
+model = HourglassLlama.from_pretrained("some_hf_checkpoint")
 ```
 
 ## Usage (training)
 
 Define a config file in `configs/`, called `demo_run` in this case:
 ```py
-from package_name import (
-    DemoModel,
-    DemoModelConfig,
-    DemoDataset,
+from hourglass_llama import (
+    HourglassLlama,
+    HourglassLlamaConfig,
+    EnWiki8Dataset,
     Trainer,
     TrainConfig
 )
 
-model = DemoModel(DemoModelConfig(xxx))
-dataset = DemoDataset(xxx)
+model = HourglassLlama(HourglassLlama(xxx))
+dataset = EnWiki8Dataset(xxx)
 
 trainer = Trainer(
     model=model,
     dataset=dataset,    
     train_config=TrainConfig(xxx)
 )
-```
-Create an accelerate config.
+Run the training
 ```sh
-accelerate config
-```
-
-And then run the training.
-```sh
-accelerate launch train.py demo_run
+python train.py demo_run
 ```
