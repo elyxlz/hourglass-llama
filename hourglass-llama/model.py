@@ -9,8 +9,10 @@ from .config import DemoModelConfig
 
 """ debug """
 
+
 def debug_func(func):
-    """ Decorator to debug a function when error is encountered."""
+    """Decorator to debug a function when error is encountered."""
+
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
         try:
@@ -22,6 +24,8 @@ def debug_func(func):
             pdb.runcall(func, *args, **kwargs)
 
     return wrapper
+
+
 import math
 import torch
 from torch import nn, Tensor
@@ -229,10 +233,9 @@ class Patch(nn.Module):
         return f"PatchWithResampling(factor={self.factor}, resample={self.resample}, in_dim={self.in_dim}, out_dim={self.out_dim})"
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-
-        if self.resample == "down" and self.factor > 1: # TODO
-            x = torch.roll(x, shifts=self.factor-1, dims=1)
-            x[:, : self.factor-1] = 0
+        if self.resample == "down" and self.factor > 1:  # TODO
+            x = torch.roll(x, shifts=self.factor - 1, dims=1)
+            x[:, : self.factor - 1] = 0
             # import pdb; pdb.set_trace()
 
         if self.resample == "down" and self.factor > 1:
@@ -407,7 +410,6 @@ class Hourglass(nn.Module):
         for i, block in enumerate(self.blocks):
             nn.init.zeros_(block.attn.o_proj.weight)
             nn.init.zeros_(block.mlp.fc3.weight)
-
 
         # zero init all patches after middle idxs # to keep identity func within each hierarchy
         for i, patch in enumerate(self.patches):
